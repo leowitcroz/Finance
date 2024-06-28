@@ -1,6 +1,6 @@
 <template>
- <Bar :data="data1" :options="options1" />
- <PolarArea width="300px" :data="data2" :options="options2" />
+  <Bar :data="data1" :options="options1" />
+  <PolarArea width="300px" :data="data2" :options="options2" />
 </template>
 
 <script lang="ts" setup>
@@ -25,6 +25,14 @@ const data1 = ref({
   datasets: [{
     label: "# of Votes",
     data: [12, 19, 3, 5, 2, 3],
+    backgroundColor: [
+      "rgba(255, 99, 132, 0.2)",  // Red
+      "rgba(54, 162, 235, 0.2)",  // Blue
+      "rgba(255, 206, 86, 0.2)",  // Yellow
+      "rgba(75, 192, 192, 0.2)",  // Green
+      "rgba(153, 102, 255, 0.2)", // Purple
+      "rgba(255, 159, 64, 0.2)"   // Orange
+    ],
     borderWidth: 1
   }]
 });
@@ -50,7 +58,14 @@ const data2 = ref({
   datasets: [
     {
       label: "My First dataset",
-      backgroundColor: "rgba(179,181,198,0.2)",
+      backgroundColor: [
+        "rgba(255, 99, 132, 0.2)",  // Red
+        "rgba(54, 162, 235, 0.2)",  // Blue
+        "rgba(255, 206, 86, 0.2)",  // Yellow
+        "rgba(75, 192, 192, 0.2)",  // Green
+        "rgba(153, 102, 255, 0.2)", // Purple
+        "rgba(255, 159, 64, 0.2)"   // Orange
+      ],
       pointBackgroundColor: "rgba(179,181,198,1)",
       pointBorderColor: "#fff",
       pointHoverBackgroundColor: "#fff",
@@ -59,7 +74,14 @@ const data2 = ref({
     },
     {
       label: "My Second dataset",
-      backgroundColor: "rgba(179,181,198,0.2)",
+      backgroundColor: [
+        "rgba(255, 99, 132, 0.2)",  // Red
+        "rgba(54, 162, 235, 0.2)",  // Blue
+        "rgba(255, 206, 86, 0.2)",  // Yellow
+        "rgba(75, 192, 192, 0.2)",  // Green
+        "rgba(153, 102, 255, 0.2)", // Purple
+        "rgba(255, 159, 64, 0.2)"   // Orange
+      ],
       pointBackgroundColor: "rgba(179,181,198,1)",
       pointBorderColor: "#fff",
       pointHoverBackgroundColor: "#fff",
