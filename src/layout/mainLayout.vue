@@ -98,7 +98,7 @@ const buttons = ref([
 .views {
     display: flex;
     justify-content: center;
-    height: 79vh;
+    height: 81vh;
 }
 
 .routers {
