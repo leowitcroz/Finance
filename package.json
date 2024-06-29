@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "apexcharts": "^3.49.2",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",

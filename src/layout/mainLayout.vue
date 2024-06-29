@@ -1,14 +1,24 @@
-
 <template>
     <div class="mainLayout">
         <nav class="nav-bar">
             <div class="itens">
                 <h3>titulo</h3>
-                <h3>perfil</h3>
+                <div class="dropdown" style="display: flex;margin-left: 3%; margin-bottom: 1%;">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style="background-color: #38b14a;border:none;color: whitesmoke; font-weight: 600;">
+                        Filter
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="btns">
-                <button class="btn_navbar" v-for="(btn,key) in buttons" :key="key">{{ btn.name }}</button>
-                
+                <button class="btn_navbar" v-for="(btn, key) in buttons" :key="key">{{ btn.name }}</button>
+
             </div>
         </nav>
         <div class="views">
@@ -25,25 +35,25 @@ import { ref } from "vue";
 
 const buttons = ref([
     {
-        name:'expenses'
+        name: 'expenses'
     },
     {
-        name:'income'
+        name: 'income'
     },
     {
-        name:'debt'
+        name: 'debt'
     },
     {
-        name:'stocks'
+        name: 'stocks'
     },
     {
-        name:'general'
+        name: 'general'
     },
     {
-        name:'investments'
+        name: 'investments'
     },
     {
-        name:'planning'
+        name: 'planning'
     },
 ])
 
@@ -72,14 +82,14 @@ const buttons = ref([
     border: none;
     margin-right: 10px;
     margin-left: 10px;
-    background-color:#38b14a;
+    background-color: #38b14a;
     color: whitesmoke;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
 }
 
-.btn_navbar:hover{
+.btn_navbar:hover {
     text-decoration: underline;
 }
 
@@ -98,7 +108,7 @@ const buttons = ref([
 .views {
     display: flex;
     justify-content: center;
-    height: 81vh;
+    height: 80vh;
 }
 
 .routers {

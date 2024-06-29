@@ -1,11 +1,46 @@
 <template>
   <div class="homeDashboard">
-    <div class="lineDash">
-      <Line :data="data1" :options="options1" />
+    <div class="title">
+      <h1 class="title-text">General Information</h1>
     </div>
-    <div class="barDash">
-      <Bar :data="data2" :options="options2" />
+    <div class="container">
+      <div class="row">
+        <div class="col-6" style="margin-top: 10px;">
+          <div class="dropdown" style="display: flex;margin-left: 3%;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false" style="background-color: #38b14a;border:none;color: whitesmoke; font-weight: 600;">
+              Months
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+          <div class="lineDash">
+            <Line :data="data1" :options="options1" />
+          </div>
+        </div>
+        <div class="col-6" style="margin-top: 10px;">
+          <div class="dropdown" style="display: flex;margin-left: 3%;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false" style="background-color: #38b14a;border:none;color: whitesmoke; font-weight: 600;">
+              Months
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+          <div class="barDash">
+            <Bar :data="data2" :options="options2" />
+          </div>
+        </div>
+      </div>
     </div>
+
+
   </div>
 
 </template>
@@ -33,7 +68,7 @@ const data1 = ref({
       label: 'Income(R$)',
       backgroundColor: '#f87979',
       borderColor: '#f87979',
-      data: [5000,4000,6000,3000,4000,5000,5000]
+      data: [5000, 4000, 6000, 3000, 4000, 5000, 5000]
     },
     {
       label: 'Expenses(R$)',
@@ -114,17 +149,27 @@ onMounted(async () => {
 <style>
 .homeDashboard {
   display: flex;
+  flex-direction: column;
 }
 
 .lineDash {
-  margin: 4%;
-  width: 50%;
+
   height: 300px;
 }
 
 .barDash {
-  margin: 4%;
   height: 300px;
-  width: 50%;
+}
+
+.title {
+  display: flex;
+  margin-top: 30px;
+  margin-left: 50px;
+}
+
+.title-text {
+  font-size: 2rem;
+  color: rgb(41, 40, 40);
+
 }
 </style>
