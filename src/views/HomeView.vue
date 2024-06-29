@@ -13,9 +13,18 @@
 <script lang="ts" setup>
 import Chart from 'chart.js/auto';
 import { Bar, Line } from "vue-chartjs";
+import { Utils } from '../utils/utils'
 
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 Chart.register();
+
+const utils = new Utils('http://localhost:3000/')
+
+const income = ref(['5000', '4000', '6000', '3000', '4000', '5000', '5000',])
+
+const avaregeIncome = utils.averageIncome(income.value)
+
+
 
 const data1 = ref({
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -23,11 +32,13 @@ const data1 = ref({
     {
       label: 'Income(R$)',
       backgroundColor: '#f87979',
-      data: [5000,4000,6000,3000,4000,5000,5000,]
+      borderColor: '#f87979',
+      data: [5000,4000,6000,3000,4000,5000,5000]
     },
     {
       label: 'Expenses(R$)',
       backgroundColor: '#201c36',
+      borderColor: '#201c36',
       data: [4350, 4200, 4000, 2500, 3500, 6000, 5000]
     }
   ]
@@ -35,9 +46,13 @@ const data1 = ref({
 
 const options1 = ref({
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      max: avaregeIncome,
+    }
+  }
 });
-
 const data2 = ref({
   labels: [
     "Eating",
@@ -88,6 +103,11 @@ const options2 = ref({
   responsive: true,
   maintainAspectRatio: false
 });
+
+onMounted(async () => {
+}
+);
+
 
 </script>
 
