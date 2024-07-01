@@ -2,7 +2,9 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MainLayout from '../layout/mainLayout.vue'
 import ExpensesView from '../views/ExpensesView.vue'
-import AuthView from '../auth/authView.vue'
+import AuthLayoutView from '../layout/authLayout.vue'
+import LogInView from '../auth/logInView.vue'
+
 
 const routes: Array<RouteRecordRaw> = [
 
@@ -26,8 +28,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path:'/auth',
-    component:AuthView,
-    name:'auth',
+    component:AuthLayoutView,
+    children: [
+      {
+        path: '',
+        name: 'login',
+        component: LogInView,
+      },
+    ]
   }
 
 ]
