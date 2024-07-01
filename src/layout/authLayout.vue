@@ -31,6 +31,7 @@
     padding-right: 10%;
     border-radius: 15px;
     width: 75%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
   
   .logo {

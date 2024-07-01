@@ -1,6 +1,7 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import { Ref } from "vue";
+import { Ref, computed } from "vue";
+import store from "../store";
 
 export class Utils {
     private baseUrl: string;
@@ -26,23 +27,23 @@ export class Utils {
     //     }
     // }
 
-    // public async post<T>(endpoint: string, data: any): Promise<T> {
+    public async post<T>(endpoint: string, data: any): Promise<T> {
 
-    //     const token = localStorage.getItem('authToken')
-    //     console.log(data)
+        const token = computed(() => store.getters.getToken);
+        
 
-    //     try {
-    //         const response: AxiosResponse<T> = await axios.post(`${this.baseUrl}${endpoint}`, data, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         })
-    //         return response.data
-    //     }
-    //     catch (error) {
-    //         throw error;
-    //     }
-    // }
+        try {
+            const response: AxiosResponse<T> = await axios.post(`${this.baseUrl}${endpoint}`, data, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 
     // public async delete(endpoint: string, id: string) {
 
