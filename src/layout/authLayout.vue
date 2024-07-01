@@ -30,6 +30,7 @@
     padding-left: 10%;
     padding-right: 10%;
     border-radius: 15px;
+    width: 75%;
   }
   
   .logo {

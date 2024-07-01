@@ -1,8 +1,8 @@
 <template>
     <div class="mainLayout">
         <nav class="nav-bar">
-            <div class="itens">
-                <h3>titulo</h3>
+            <div class="itens_">
+                <img src="../assets/logo.png" alt="" width="20%">
                 <div class="dropdown" style="display: flex;margin-left: 3%; margin-bottom: 1%;">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -60,7 +60,7 @@ const buttons = ref([
 </script>
 
 <style>
-.itens {
+.itens_ {
     display: flex;
     justify-content: space-between;
     margin-left: 8%;

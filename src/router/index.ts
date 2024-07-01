@@ -16,13 +16,13 @@ const routes: Array<RouteRecordRaw> = [
         path: '',
         name: 'home',
         component: HomeView,
-        meta: { requiresAuth: true }
+        // meta: { requiresAuth: true }
       },
       {
         path: '/expenses',
         name: 'expeneses',
         component: ExpensesView,
-        meta: { requiresAuth: true }
+        // meta: { requiresAuth: true }
       }
     ]
   },
