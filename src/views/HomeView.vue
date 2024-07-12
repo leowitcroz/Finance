@@ -146,6 +146,7 @@ onMounted(async () => {
   display: flex;
   margin-top: 30px;
   margin-left: 50px;
+  margin-bottom: 10px;
 }
 
 .title-text {
