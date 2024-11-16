@@ -10,27 +10,28 @@ export class Utils {
         this.baseUrl = baseUrl;
     }
 
-    // public async get<T>(endpoint: string): Promise<T> {
+    public async get<T>(endpoint: string, id: string): Promise<T> {
 
-    //     const token = localStorage.getItem('authToken')
+        const token = store.getters.getToken
+        console.log(token)
 
-    //     try {
-    //         const response: AxiosResponse<T> = await axios.get(`${this.baseUrl}${endpoint}`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         })
-    //         return response.data;
-    //     }
-    //     catch (error) {
-    //         throw error;
-    //     }
-    // }
+        try {
+            const response: AxiosResponse<T> = await axios.get(`${this.baseUrl}${endpoint}/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            return response.data;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 
     public async post<T>(endpoint: string, data: any): Promise<T> {
 
         const token = computed(() => store.getters.getToken);
-        
+
 
         try {
             const response: AxiosResponse<T> = await axios.post(`${this.baseUrl}${endpoint}`, data, {
@@ -81,17 +82,17 @@ export class Utils {
         let incomeNumbers = []
 
         for (let i = 0; i < income.length; i++) {
-           
+
             incomeNumbers.push(Number(income[i]))
 
         }
 
-        for(let i = 0; i < incomeNumbers.length; i++){
+        for (let i = 0; i < incomeNumbers.length; i++) {
             sum += incomeNumbers[i];
         }
 
-        return Math.round((sum/incomeNumbers.length + 2000))
-        
+        return Math.round((sum / incomeNumbers.length + 2000))
+
     }
 }
 

@@ -3,12 +3,12 @@
     <input
       type="email"
       class="form-control"
-      :class="{ 'is-invalid': invalidInput}"
+      :class="{ 'is-invalid': invalidInput }"
       id="floatingInput"
       placeholder="name@example.com"
       v-model="user.email"
     />
-    <label for="floatingInput" style="" >Email address</label>
+    <label for="floatingInput" style="">Email address</label>
     <div class="invalid-feedback">Invalid credentials</div>
   </div>
   <div class="form-floating">
@@ -17,7 +17,7 @@
       class="form-control"
       id="floatingPassword"
       placeholder="Password"
-      :class="{ 'is-invalid': invalidInput}"
+      :class="{ 'is-invalid': invalidInput }"
       v-model="user.password"
     />
     <label for="floatingPassword">Password</label>
@@ -55,6 +55,7 @@ async function login() {
       const token = request.token.accessToken;
 
       store.dispatch("saveToken", token);
+      store.dispatch("saveData", data);
 
       router.push({ name: "home" });
       user.value.email = "";
@@ -79,14 +80,13 @@ onMounted(async () => {
 
 
 <style>
-
 .form-control:focus {
-  border-color: #ced4da !important;/* Cor de borda padrão */
-  box-shadow: none  !important;/* Remove a sombra ao redor do campo */
+  border-color: #ced4da !important; /* Cor de borda padrão */
+  box-shadow: none !important; /* Remove a sombra ao redor do campo */
 }
 
 .form-floating > label::after {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .buttons {

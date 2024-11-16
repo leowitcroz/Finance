@@ -50,15 +50,6 @@ const buttons = ref([
     name: "debt",
   },
   {
-    name: "stocks",
-  },
-  {
-    name: "general",
-  },
-  {
-    name: "investments",
-  },
-  {
     name: "planning",
   },
 ]);
