@@ -12,8 +12,7 @@ export class Utils {
 
     public async get<T>(endpoint: string, id: string): Promise<T> {
 
-        const token = store.getters.getToken
-        console.log(token)
+        const token = localStorage.getItem('authToken')
 
         try {
             const response: AxiosResponse<T> = await axios.get(`${this.baseUrl}${endpoint}/${id}`, {

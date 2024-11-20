@@ -52,8 +52,10 @@ async function login() {
 
     if (request) {
       const data = request.data;
-      const token = request.token.accessToken;
+      const token = request.token.accessToken
 
+      localStorage.setItem('authToken', token)
+      localStorage.setItem('saveData', JSON.stringify(data))
       store.dispatch("saveToken", token);
       store.dispatch("saveData", data);
 
@@ -74,7 +76,8 @@ async function login() {
 }
 
 onMounted(async () => {
-  store.dispatch("removeToken");
+  
+  localStorage.removeItem("authToken")
 });
 </script>
 

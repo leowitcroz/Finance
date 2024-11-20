@@ -28,8 +28,12 @@
               <li><a class="dropdown-item" href="#">1 year</a></li>
             </ul>
           </div>
-          <div  class="lineDash">
-            <Line v-if="isDataLoaded" :data="lineGraphData" :options="optionLine" />
+          <div class="lineDash">
+            <Line
+              v-if="isDataLoaded"
+              :data="lineGraphData"
+              :options="optionLine"
+            />
           </div>
         </div>
         <div class="col-6" style="margin-top: 45px">
@@ -157,19 +161,21 @@ const updateMonthsWithIncomes = async (receivedArray: any[]) => {
   });
 
   lineGraphData.value.datasets[0].data = months.value.map((m) => m.incomes);
-}
-watch(incomes, (newIncomes) => {
-  updateMonthsWithIncomes(newIncomes);
-  
-});
+};
 
 const isDataLoaded = ref(false);
 
 onMounted(async () => {
-  const data = store.getters.getData;
-  const request: any = await utils.get("expenses/incomes", data.id);
-  await updateMonthsWithIncomes(request);
-  isDataLoaded.value = true;
+  console.log(isDataLoaded.value);
+  const dataString = localStorage.getItem("saveData");
+  if (dataString) {
+    const data = JSON.parse(dataString);
+    const request: any = await utils.get("expenses/incomes", data.id);
+    await updateMonthsWithIncomes(request);
+    isDataLoaded.value = true;
+  }
+
+  console.log(isDataLoaded.value);
 });
 </script>
 
