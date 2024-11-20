@@ -28,13 +28,13 @@
               <li><a class="dropdown-item" href="#">1 year</a></li>
             </ul>
           </div>
-          <div class="lineDash">
-            <Line :data="data1" :options="options1" />
+          <div  class="lineDash">
+            <Line v-if="isDataLoaded" :data="lineGraphData" :options="optionLine" />
           </div>
         </div>
         <div class="col-6" style="margin-top: 45px">
           <div class="barDash">
-            <Bar :data="data2" :options="options2" />
+            <Bar :data="bardGraphData" :options="optionBar" />
           </div>
         </div>
       </div>
@@ -47,34 +47,43 @@ import Chart from "chart.js/auto";
 import { Bar, Line } from "vue-chartjs";
 import { Utils } from "../utils/utils";
 
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import store from "@/store";
 Chart.register();
 
 const utils = new Utils("http://localhost:3000/");
 
 const income = ref(["5000", "4000", "6000", "3000", "4000", "5000", "5000"]);
-const expenses = ref(["4350", "4200", "4000", "2500", "3500", "6000", "5000"]);
+const expenses = ref(["", "", "", "2500", "3500", "6000", "5000"]);
+
+const months = ref([
+  { month: "January", incomes: 0 },
+  { month: "February", incomes: 0 },
+  { month: "March", incomes: 0 },
+  { month: "April", incomes: 0 },
+  { month: "May", incomes: 0 },
+  { month: "June", incomes: 0 },
+  { month: "July", incomes: 0 },
+  { month: "August", incomes: 0 },
+  { month: "September", incomes: 0 },
+  { month: "October", incomes: 0 },
+  { month: "November", incomes: 0 },
+  { month: "December", incomes: 0 },
+]);
 
 const avaregeIncome = utils.averageIncome(income.value);
 const avaregeExpenses = utils.averageIncome(expenses.value);
-onMounted(async () => {
-  const data = store.getters.getData
 
-  const request: any = await utils.get("expenses", data.id);
+const incomes = ref<number[]>([]);
 
-  
-
-});
-
-const data1 = ref({
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
+const lineGraphData = ref({
+  labels: months.value.map((m) => m.month),
   datasets: [
     {
       label: "Income(R$)",
       backgroundColor: "#f87979",
       borderColor: "#f87979",
-      data: [5000, 4000, 6000, 3000, 4000, 5000, 5000],
+      data: months.value.map((m) => m.incomes),
     },
     {
       label: "Expenses(R$)",
@@ -85,7 +94,7 @@ const data1 = ref({
   ],
 });
 
-const options1 = ref({
+const optionLine = ref({
   responsive: true,
   maintainAspectRatio: false,
   scales: {
@@ -94,7 +103,8 @@ const options1 = ref({
     },
   },
 });
-const data2 = ref({
+
+const bardGraphData = ref({
   labels: [
     "Food",
     "Streaming",
@@ -124,7 +134,7 @@ const data2 = ref({
   ],
 });
 
-const options2 = ref({
+const optionBar = ref({
   responsive: true,
   maintainAspectRatio: false,
   scales: {
@@ -134,7 +144,33 @@ const options2 = ref({
   },
 });
 
-onMounted(async () => {});
+const updateMonthsWithIncomes = async (receivedArray: any[]) => {
+  months.value.forEach((month) => {
+    month.incomes = 0;
+  });
+  receivedArray.forEach((data) => {
+    const monthIndex = data.month - 1;
+
+    if (months.value[monthIndex]) {
+      months.value[monthIndex].incomes = data.totalIncome;
+    }
+  });
+
+  lineGraphData.value.datasets[0].data = months.value.map((m) => m.incomes);
+}
+watch(incomes, (newIncomes) => {
+  updateMonthsWithIncomes(newIncomes);
+  
+});
+
+const isDataLoaded = ref(false);
+
+onMounted(async () => {
+  const data = store.getters.getData;
+  const request: any = await utils.get("expenses/incomes", data.id);
+  await updateMonthsWithIncomes(request);
+  isDataLoaded.value = true;
+});
 </script>
 
 <style>
