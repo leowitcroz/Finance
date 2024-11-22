@@ -61,18 +61,18 @@ const income = ref(["5000", "4000", "6000", "3000", "4000", "5000", "5000"]);
 const expenses = ref(["", "", "", "2500", "3500", "6000", "5000"]);
 
 const months = ref([
-  { month: "January", incomes: 0 },
-  { month: "February", incomes: 0 },
-  { month: "March", incomes: 0 },
-  { month: "April", incomes: 0 },
-  { month: "May", incomes: 0 },
-  { month: "June", incomes: 0 },
-  { month: "July", incomes: 0 },
-  { month: "August", incomes: 0 },
-  { month: "September", incomes: 0 },
-  { month: "October", incomes: 0 },
-  { month: "November", incomes: 0 },
-  { month: "December", incomes: 0 },
+  { month: "January", incomes: 0, expenses: 0 },
+  { month: "February", incomes: 0, expenses: 0 },
+  { month: "March", incomes: 0, expenses: 0 },
+  { month: "April", incomes: 0, expenses: 0 },
+  { month: "May", incomes: 0, expenses: 0 },
+  { month: "June", incomes: 0, expenses: 0 },
+  { month: "July", incomes: 0, expenses: 0 },
+  { month: "August", incomes: 0, expenses: 0 },
+  { month: "September", incomes: 0, expenses: 0 },
+  { month: "October", incomes: 0, expenses: 0 },
+  { month: "November", incomes: 0, expenses: 0 },
+  { month: "December", incomes: 0, expenses: 0 },
 ]);
 
 const avaregeIncome = utils.averageIncome(income.value);
@@ -93,7 +93,7 @@ const lineGraphData = ref({
       label: "Expenses(R$)",
       backgroundColor: "#201c36",
       borderColor: "#201c36",
-      data: [4350, 4200, 4000, 2500, 3500, 6000, 5000],
+      data:  months.value.map((m) => m.expenses),
     },
   ],
 });
@@ -148,6 +148,14 @@ const optionBar = ref({
   },
 });
 
+const getIncomeData = async (dataString: any) => {
+  if (dataString) {
+    const data = JSON.parse(dataString);
+    const request: any = await utils.get("expenses/incomes", data.id);
+    await updateMonthsWithIncomes(request);
+  }
+};
+
 const updateMonthsWithIncomes = async (receivedArray: any[]) => {
   months.value.forEach((month) => {
     month.incomes = 0;
@@ -163,19 +171,36 @@ const updateMonthsWithIncomes = async (receivedArray: any[]) => {
   lineGraphData.value.datasets[0].data = months.value.map((m) => m.incomes);
 };
 
+const getExpenseData = async (dataString: any) => {
+  if (dataString) {
+    const data = JSON.parse(dataString);
+    const request: any = await utils.get("expenses/prices", data.id);
+    await updateMonthsWithExpenses(request);
+  }
+};
+
+const updateMonthsWithExpenses = async (receivedArray: any[]) => {
+  months.value.forEach((month) => {
+    month.expenses = 0;
+  });
+  receivedArray.forEach((data) => {
+    const monthIndex = data.month - 1;
+
+    if (months.value[monthIndex]) {
+      months.value[monthIndex].expenses = data.totalExpense;
+    }
+  });
+
+  lineGraphData.value.datasets[1].data = months.value.map((m) => m.expenses);
+};
+
 const isDataLoaded = ref(false);
 
 onMounted(async () => {
-  console.log(isDataLoaded.value);
   const dataString = localStorage.getItem("saveData");
-  if (dataString) {
-    const data = JSON.parse(dataString);
-    const request: any = await utils.get("expenses/incomes", data.id);
-    await updateMonthsWithIncomes(request);
-    isDataLoaded.value = true;
-  }
-
-  console.log(isDataLoaded.value);
+  await getIncomeData(dataString);
+  await getExpenseData(dataString);
+  isDataLoaded.value = true;
 });
 </script>
 
