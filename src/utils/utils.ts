@@ -74,7 +74,7 @@ export class Utils {
     //     }
     // }
 
-    public averageIncome(income: string[]) {
+    public averageIncome(income: Number[]) {
         // this is for the graph
 
         let sum = 0
@@ -85,12 +85,11 @@ export class Utils {
             incomeNumbers.push(Number(income[i]))
 
         }
-
         for (let i = 0; i < incomeNumbers.length; i++) {
             sum += incomeNumbers[i];
         }
-
-        return Math.round((sum / incomeNumbers.length + 2000))
+ 
+        return Math.round((sum * 1.02))
 
     }
 }

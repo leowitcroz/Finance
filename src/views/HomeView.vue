@@ -57,9 +57,6 @@ Chart.register();
 
 const utils = new Utils("http://localhost:3000/");
 
-const income = ref(["5000", "4000", "6000", "3000", "4000", "5000", "5000"]);
-const expenses = ref(["", "", "", "2500", "3500", "6000", "5000"]);
-
 const months = ref([
   { month: "January", incomes: 0, expenses: 0 },
   { month: "February", incomes: 0, expenses: 0 },
@@ -75,10 +72,10 @@ const months = ref([
   { month: "December", incomes: 0, expenses: 0 },
 ]);
 
-const avaregeIncome = utils.averageIncome(income.value);
-const avaregeExpenses = utils.averageIncome(expenses.value);
+const income = ref<number[]>([]);
+const expenses = ref<number[]>([]);
 
-const incomes = ref<number[]>([]);
+const avarege_ = ref()
 
 const lineGraphData = ref({
   labels: months.value.map((m) => m.month),
@@ -93,7 +90,7 @@ const lineGraphData = ref({
       label: "Expenses(R$)",
       backgroundColor: "#201c36",
       borderColor: "#201c36",
-      data:  months.value.map((m) => m.expenses),
+      data: months.value.map((m) => m.expenses),
     },
   ],
 });
@@ -103,7 +100,7 @@ const optionLine = ref({
   maintainAspectRatio: false,
   scales: {
     y: {
-      max: avaregeIncome,
+      max: avarege_,
     },
   },
 });
@@ -143,7 +140,7 @@ const optionBar = ref({
   maintainAspectRatio: false,
   scales: {
     y: {
-      max: avaregeExpenses,
+      max: avarege_,
     },
   },
 });
@@ -169,6 +166,8 @@ const updateMonthsWithIncomes = async (receivedArray: any[]) => {
   });
 
   lineGraphData.value.datasets[0].data = months.value.map((m) => m.incomes);
+
+  income.value = months.value.map((m) => m.incomes);
 };
 
 const getExpenseData = async (dataString: any) => {
@@ -192,7 +191,16 @@ const updateMonthsWithExpenses = async (receivedArray: any[]) => {
   });
 
   lineGraphData.value.datasets[1].data = months.value.map((m) => m.expenses);
+
+  expenses.value = months.value.map((m) => m.expenses)
 };
+
+const avarege = (income:number, expenses:number) => {
+  if(income >= expenses){
+    avarege_.value = income
+  }
+  else avarege_.value = expenses
+}
 
 const isDataLoaded = ref(false);
 
@@ -200,6 +208,7 @@ onMounted(async () => {
   const dataString = localStorage.getItem("saveData");
   await getIncomeData(dataString);
   await getExpenseData(dataString);
+  avarege(utils.averageIncome(income.value), utils.averageIncome(expenses.value))
   isDataLoaded.value = true;
 });
 </script>
