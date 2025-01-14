@@ -49,7 +49,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authToken = localStorage.getItem('authToken');
- 
+  
+
   if (to.meta.requiresAuth && !authToken) {
     // Se a rota requer autenticação e não há token, redireciona para a página de login
     next({ name: 'login' });

@@ -19,13 +19,19 @@
                 font-weight: 600;
               "
             >
-              6 Months
+              {{ periodCurrent }}
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">1 Month</a></li>
-              <li><a class="dropdown-item" href="#">6 Months</a></li>
-              <li><a class="dropdown-item" href="#">6 Months</a></li>
-              <li><a class="dropdown-item" href="#">1 year</a></li>
+              <li v-for="(item, key) in period" :key="key">
+                <a
+                  class="dropdown-item"
+                  @click="
+                    periodValue = item.value;
+                    periodCurrent = item.label;
+                  "
+                  >{{ item.label }}</a
+                >
+              </li>
             </ul>
           </div>
           <div class="lineDash">
@@ -72,10 +78,34 @@ const months = ref([
   { month: "December", incomes: 0, expenses: 0 },
 ]);
 
+const getMonthsByPeriod = (period: number) => {
+  return months.value.slice(0, period + 1);
+};
+
+const monthsEffective = ref();
+
+const period = ref([
+  {
+    label: "3 Months",
+    value: 2,
+  },
+  {
+    label: "6 Months",
+    value: 5,
+  },
+  {
+    label: "12 Months",
+    value: 11,
+  },
+]);
+
+const periodValue = ref(2);
+const periodCurrent = ref("3 Months");
+
 const income = ref<number[]>([]);
 const expenses = ref<number[]>([]);
 
-const avarege_ = ref()
+const avarege_ = ref();
 
 const lineGraphData = ref({
   labels: months.value.map((m) => m.month),
@@ -154,12 +184,8 @@ const getIncomeData = async (dataString: any) => {
 };
 
 const updateMonthsWithIncomes = async (receivedArray: any[]) => {
-  months.value.forEach((month) => {
-    month.incomes = 0;
-  });
   receivedArray.forEach((data) => {
     const monthIndex = data.month - 1;
-
     if (months.value[monthIndex]) {
       months.value[monthIndex].incomes = data.totalIncome;
     }
@@ -179,12 +205,8 @@ const getExpenseData = async (dataString: any) => {
 };
 
 const updateMonthsWithExpenses = async (receivedArray: any[]) => {
-  months.value.forEach((month) => {
-    month.expenses = 0;
-  });
   receivedArray.forEach((data) => {
     const monthIndex = data.month - 1;
-
     if (months.value[monthIndex]) {
       months.value[monthIndex].expenses = data.totalExpense;
     }
@@ -192,23 +214,59 @@ const updateMonthsWithExpenses = async (receivedArray: any[]) => {
 
   lineGraphData.value.datasets[1].data = months.value.map((m) => m.expenses);
 
-  expenses.value = months.value.map((m) => m.expenses)
+  expenses.value = months.value.map((m) => m.expenses);
 };
 
-const avarege = (income:number, expenses:number) => {
-  if(income >= expenses){
-    avarege_.value = income
-  }
-  else avarege_.value = expenses
-}
+const avarege = (income: number, expenses: number) => {
+  if (income >= expenses) {
+    avarege_.value = income;
+  } else avarege_.value = expenses;
+};
 
 const isDataLoaded = ref(false);
 
+const periodSetting = (period: number) => {
+  for (let i = 0; i <= 2; i++) {
+    console.log(months.value[i]);
+  }
+};
+
+watch(periodValue, async (newPeriod) => {
+  // Atualiza os meses de acordo com o período selecionado
+  console.log(newPeriod);
+  monthsEffective.value = getMonthsByPeriod(newPeriod);
+  console.log(monthsEffective.value.map((m: any) => m.incomes));
+
+  isDataLoaded.value = false;
+  // Atualiza os rótulos e dados do gráfico com os meses filtrados
+  lineGraphData.value.labels = monthsEffective.value.map((m: any) => m.month);
+
+  // Recarregar os dados de incomes e expenses de acordo com os meses
+  await updateMonthsWithIncomes(income.value);
+  await updateMonthsWithExpenses(expenses.value);
+
+  // Aguardar a atualização dos dados
+  isDataLoaded.value = true;
+});
+
 onMounted(async () => {
   const dataString = localStorage.getItem("saveData");
+  monthsEffective.value = getMonthsByPeriod(periodValue.value);
   await getIncomeData(dataString);
   await getExpenseData(dataString);
-  avarege(utils.averageIncome(income.value), utils.averageIncome(expenses.value))
+  avarege(
+    utils.averageIncome(income.value),
+    utils.averageIncome(expenses.value)
+  );
+
+  lineGraphData.value.labels = monthsEffective.value.map((m: any) => m.month);
+  lineGraphData.value.datasets[0].data = monthsEffective.value.map(
+    (m: any) => m.incomes
+  );
+  lineGraphData.value.datasets[1].data = monthsEffective.value.map(
+    (m: any) => m.expenses
+  );
+
   isDataLoaded.value = true;
 });
 </script>
